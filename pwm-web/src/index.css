@@ -1,0 +1,11 @@
+:root {
+  font-family: 'Roboto', sans-serif;
+}
+/* src/index.css */
+body.mode-light {
+  color-scheme: light;
+}
+
+body.mode-dark {
+  color-scheme: dark;
+}
