@@ -38,6 +38,7 @@
 
     useEffect(() => {
       fetchBoard()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [boardId])
 
     const createNewColumn = async (newColumnData) => {
