@@ -95,8 +95,8 @@ function Column({ column, deleteColumn, createNewCard, updateCard, deleteCard })
       <div ref = {setNodeRef} style = {dndKitColumnStyles} {...attributes}>
         <Box {...listeners}
           sx ={{
-            minWidth: '285px',
-            maxWidth: '285px',
+            minWidth: '260px',
+            maxWidth: '260px',
             bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#dcdde1'),
             ml: 2,
             borderRadius: '12px',

@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { userModel } from '~/models/userModel'
+import { boardService } from '~/services/boardService'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 import { env } from '~/config/environment'
@@ -29,10 +30,13 @@ const register = async (reqBody) => {
     }
 
     const result = await userModel.createNew(newUserData)
+    const userId = result.insertedId
+    const defaultBoard = await boardService.createBoardForUser(userId)
 
     return {
         message: 'Đăng ký thành công!',
-        userId: result.insertedId
+        userId: result.insertedId,
+        board: defaultBoard
     }
 }
 
@@ -57,6 +61,8 @@ const login = async ({ username, password }) => {
         { expiresIn: '1d' }
     )
 
+    const boards = await boardService.getBoardsByUserId(user._id)
+
     return {
         message: 'Đăng nhập thành công!',
         token,
@@ -66,7 +72,8 @@ const login = async ({ username, password }) => {
             username: user.username,
             birthDate: user.birthDate,
             hometown: user.hometown
-        }
+        },
+        boards
     }
 }
 

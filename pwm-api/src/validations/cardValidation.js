@@ -36,8 +36,8 @@ const update = async (req, res, next) => {
             .pattern(
                 /^#([0-9A-Fa-f]{3}){1,2}$|^([a-zA-Z]+)$|^(https?:\/\/.+)$|^data:image\/(png|jpeg|jpg|gif);base64,[A-Za-z0-9+/=]+$/
             )
-            .allow(null, '')
-
+            .allow(null, ''),
+        completed: Joi.boolean()
     })
 
     try {

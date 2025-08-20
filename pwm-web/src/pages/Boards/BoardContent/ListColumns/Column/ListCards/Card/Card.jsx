@@ -24,6 +24,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
+const STATUS_COLORS = {
+  'Chưa bắt đầu': '#d32f2f',
+  'Đang làm': '#1976d2',
+  'Chờ Review': '#e1b12c',
+  'Hoàn thành': '#388e3c'
+}
+
 function Card({ card, updateCard, deleteCard }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
         id: card._id,
@@ -72,17 +79,38 @@ function Card({ card, updateCard, deleteCard }) {
     <MuiCard
       ref = {setNodeRef} style = {dndKitCardStyles} {...attributes} {...listeners}
       sx={{
+        position: 'relative',
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgba(0,0,0,0.2)',
         overflow: 'hidden',
         display: card?.FE_PlaceholderCard ? 'none' : 'block',
-        borderRadius: '12px', 
+        borderRadius: '12px',
         border: 0,
         flexShrink: 0,
         '&:hover': { borderColor: (theme) => theme.palette.primary.main },
         mb: 1
       }}
     >
+      {card?.status && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 10,
+            right: -32,
+            backgroundColor: STATUS_COLORS[card.status] || '#1976d2',
+            color: '#fff',
+            px: 2,
+            py: '4px',
+            transform: 'rotate(45deg)',
+            fontSize: '0.75rem',
+            fontWeight: 'bold',
+            boxShadow: 2,
+            pointerEvents: 'none'
+          }}
+        >
+          {card.status}
+        </Box>
+      )}
       {card?.cover && (
         /^#([0-9A-F]{3}){1,2}$/i.test(card.cover) ? (
           <Box
@@ -149,13 +177,13 @@ function Card({ card, updateCard, deleteCard }) {
           )}
         </Box>
 
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography fontWeight="bold">
-            {card?.title}
-          </Typography>
-          <IconButton size="small" onClick={handleMenuOpen}>
+        <Box display="flex" alignItems="center" gap={0.5} flex={1} minWidth={0}>
+          <IconButton size="small" onClick={handleMenuOpen} sx={{ p: '4px' }}>
             <EditIcon fontSize="small" />
           </IconButton>
+          <Typography fontWeight="bold" noWrap>
+            {card?.title}
+          </Typography>
         </Box>
 
         <Menu

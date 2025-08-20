@@ -13,9 +13,12 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const { token, user } = await loginAPI({ username, password })
+      const { token, user, boards } = await loginAPI({ username, password })
       localStorage.setItem('accessToken', token)
       localStorage.setItem('user', JSON.stringify(user))
+      if (boards?.length > 0) {
+        localStorage.setItem('boardId', boards[0]._id) // lưu board đầu tiên
+      }
       toast.success('Đăng nhập thành công')
       navigate('/board')
     } catch (error) {

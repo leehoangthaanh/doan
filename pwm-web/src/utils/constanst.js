@@ -1,4 +1,4 @@
-export const API_ROOT = 'http://localhost:8088'
+export const API_ROOT = import.meta.env.VITE_API_URL
 
 export const LABELS = {
   'hoan-thanh': { name: 'Hoàn thành', color: '#2ecc71' },

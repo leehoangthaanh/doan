@@ -173,7 +173,7 @@ function EditCard({ open, onClose, card, updateCard }) {
             <PrioritySelector setPriority={setPriority}>
               <Button variant="outlined" startIcon={<LowPriorityIcon />} sx={commonButtonStyle}>Độ ưu tiên</Button>
             </PrioritySelector>
-            <Button variant="outlined" startIcon={<AttachFileIcon />} sx={commonButtonStyle}>Đính kèm</Button>
+            {/* <Button variant="outlined" startIcon={<AttachFileIcon />} sx={commonButtonStyle}>Đính kèm</Button> */}
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>

@@ -5,6 +5,7 @@ import ListColumns from './ListColumns/ListColumns'
 import { moveCardAPI, moveColumnAPI } from '~/apis/index'
 import CalendarView from './Views/CalendarView'
 import DashboardView from './Views/DashboardView'
+import TableView from './Views/TableView'
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatters'
 import { 
@@ -85,7 +86,7 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
 
         let newCardIndex
         const isBelowOverItem = active.rect.current.translated &&
-          active.rect.current.translated.top > over.rect.top + over.rect.heigh
+          active.rect.current.translated.top > over.rect.top + over.rect.height / 2
         const modifier = isBelowOverItem ? 1 : 0
 
         newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1 
@@ -109,7 +110,9 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
           
           const rebuild_activeDraggingCardData = {
             ...activeDraggingCardData,
-            columnId: nextOverColumn._id
+            columnId: nextOverColumn._id,
+            status: nextOverColumn?.properties?.status,
+            completed: nextOverColumn?.properties?.completed
           }
 
           nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0 , rebuild_activeDraggingCardData)
@@ -117,8 +120,12 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
           nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
 
           nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
-        }
 
+          // updateCard({
+          //   cardId: activeDraggingCardId,
+          //   updateData: { columnId: nextOverColumn._id }
+          // })
+        }
         return nextColumns
       })
   }
@@ -168,6 +175,8 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
     }
   }
 
+
+
   const handleDragEnd = async (event) => {
     const { active, over } = event
     if (!active || !over) return
@@ -207,6 +216,11 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
           sourceCardOrderIds,
           destinationCardOrderIds
         })
+
+        // await updateCardAPI(activeDraggingCardId, {
+        //   ...activeDraggingCardData,
+        //   columnId: overColumn._id
+        // })
 
       } else {
         // Cùng column
@@ -252,6 +266,9 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
 
 
 
+
+
+
   const dropAnimation = { 
     sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.5' } } } )
   }
@@ -294,7 +311,9 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
       case 'calendar':
         return <CalendarView events={cardsWithDueDate} />
       case 'dashboard':
-        return <DashboardView board={board} />
+        return <DashboardView board={{...board, columns: orderedColumns}} />
+      case 'table':
+        return <TableView board={{...board, columns: orderedColumns}} />
       case 'board':
       default:
         return (

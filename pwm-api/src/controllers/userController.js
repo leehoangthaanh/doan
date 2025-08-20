@@ -13,8 +13,8 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const { token, user } = await userService.login(req.body)
-        res.status(StatusCodes.OK).json({ token, user })
+        const { token, user, boards } = await userService.login(req.body)
+        res.status(StatusCodes.OK).json({ token, user, boards })
     } catch (error) {
         next(error)
     }

@@ -43,7 +43,7 @@ function BoardBar({ board, currentView, setCurrentView }) {
             <Chip
               sx = {Menu_Style}
               icon={<DashboardIcon />}
-              label= {board?.description} 
+              label= {board?.title || 'Chưa có công việc'} 
               clickable 
             />
           </Tooltip>

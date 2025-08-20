@@ -54,8 +54,8 @@ function ListColumns({ columns, createNewColumn, deleteColumn, createNewCard, up
 
           {!openNewColumnForm
             ? <Box onClick={toggleopenNewColumnForm} sx ={{
-              minWidth: '240px',
-              maxWidth: '240px',
+              minWidth: '220px',
+              maxWidth: '220px',
               mx: 2,
               borderRadius: '12px',
               height: 'fit-content',
@@ -74,8 +74,8 @@ function ListColumns({ columns, createNewColumn, deleteColumn, createNewCard, up
                 </Button>
               </Box>
             : <Box sx={{
-              minWidth: '250px',
-              maxWidth: '250px',
+              minWidth: '230px',
+              maxWidth: '230px',
               mx: 2,
               p: 1,
               borderRadius: '12px',

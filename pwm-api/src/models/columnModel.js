@@ -38,6 +38,20 @@ const createNew = async (data) => {
     }
 }
 
+const insertMany = async (columns) => {
+    try {
+        const result = await GET_DB().collection('columns').insertMany(columns)
+        
+        // Trả về danh sách inserted columns kèm insertedId
+        return columns.map((col, index) => ({
+            ...col,
+            insertedId: result.insertedIds[index]
+        }))
+    } catch (error) {
+        throw new Error('Không thể insert nhiều column: ' + error.message)
+    }
+}
+
 const findOneById = async (id) => {
     try {
         const result = await await GET_DB().collection(COLUMN_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
@@ -98,6 +112,6 @@ const update = async (id, data) => {
 export const columnModel = {
     COLUMN_COLLECTION_NAME,
     COLUMN_COLLECTION_SCHEMA,
-    createNew, findOneById,
+    createNew, insertMany, findOneById,
     pushCardOrderIds, remove, update
 }

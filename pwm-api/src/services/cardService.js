@@ -4,8 +4,17 @@ import { columnModel } from '~/models/columnModel'
 const createNew = async (reqBody) => {
     // eslint-disable-next-line no-useless-catch
     try {
+        // Lấy thông tin cột theo columnId gửi lên
+        const column = await columnModel.findOneById(reqBody.columnId)
+        if (!column) throw new Error('Column không tồn tại')
+
+        // Lấy properties của column (status, completed...)
+        const { properties } = column
+
         const newCard = {
-            ...reqBody
+            ...reqBody,
+            status: properties?.status || '',
+            completed: properties?.completed ?? false
         }
         const createdCard = await cardModel.createNew(newCard)
         const getNewCard = await cardModel.findOneById(createdCard.insertedId)
@@ -44,16 +53,24 @@ const searchCards = async (query) => {
 }
 
 const moveCard = async (cardId, sourceColumnId, destinationColumnId, sourceCardOrderIds, destinationCardOrderIds) => {
-    // 1. Cập nhật columnId của card
-    await cardModel.update(cardId, { columnId: destinationColumnId })
+    // 1. Lấy cột đích để lấy thuộc tính mới
+    const destinationColumn = await columnModel.findOneById(destinationColumnId)
+    if (!destinationColumn) throw new Error('Column đích không tồn tại')
 
-    // 2. Cập nhật cardOrderIds của column cũ
+    const { properties } = destinationColumn
+
+    // 2. Cập nhật card: columnId mới + các thuộc tính thừa hưởng
+    await cardModel.update(cardId, {
+        columnId: destinationColumnId,
+        status: properties?.status || '',
+        completed: properties?.completed ?? false
+    })
+
+    // 3. Cập nhật cardOrderIds của cột cũ và cột mới
     await columnModel.update(sourceColumnId, { cardOrderIds: sourceCardOrderIds })
-
-    // 3. Cập nhật cardOrderIds của column mới
     await columnModel.update(destinationColumnId, { cardOrderIds: destinationCardOrderIds })
 
-    // 4. Trả về card sau khi move
+    // 4. Trả về card đã cập nhật
     return await cardModel.findOneById(cardId)
 }
 

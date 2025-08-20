@@ -150,22 +150,25 @@ export default function DashboardView({ board }) {
 
   // ==== Cards per due date category ====
   const allCards = board?.columns?.flatMap(col => col.cards || []) || []
+
   const now = new Date()
+  
   const dueDateCounts = {
-    Complete: allCards.filter(c => c.completed).length,
-    'Due soon': allCards.filter(c =>
-      c.dueDate && new Date(c.dueDate) > now &&
+    'Hoàn Thành': allCards.filter(c => c.completed === true).length,
+    'Sắp đến hạn': allCards.filter(c =>
+      c.completed !== true && c.dueDate && new Date(c.dueDate) > now &&
       (new Date(c.dueDate) - now) / (1000 * 60 * 60 * 24) <= 3
     ).length,
-    'Due later': allCards.filter(c =>
-      c.dueDate && new Date(c.dueDate) > now &&
+    'Hạn còn lâu': allCards.filter(c =>
+      c.completed !== true && c.dueDate && new Date(c.dueDate) > now &&
       (new Date(c.dueDate) - now) / (1000 * 60 * 60 * 24) > 3
     ).length,
-    Overdue: allCards.filter(c =>
-      c.dueDate && new Date(c.dueDate) < now && !c.completed
+    'Quá hạn': allCards.filter(c =>
+      c.completed !== true && c.dueDate && new Date(c.dueDate) < now
     ).length,
-    'No due date': allCards.filter(c => !c.dueDate).length
+    'Không có hạn': allCards.filter(c => c.completed !== true && !c.dueDate).length
   }
+
 
   const dueBarData = {
     labels: Object.keys(dueDateCounts),

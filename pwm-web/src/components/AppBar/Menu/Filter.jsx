@@ -107,13 +107,13 @@ function Filter({currentView, setCurrentView}) {
           Board
         </MenuItem>
 
-        {/* <MenuItem 
+        <MenuItem 
           onClick={() => handleSelectView('table')} 
           selected={currentView === 'table'}
         >
           <TableChartIcon sx={{ mr: 2, color: currentView === 'table' ? 'primary.main' : 'inherit' }} />
           Table
-        </MenuItem> */}
+        </MenuItem>
 
         <MenuItem 
           onClick={() => handleSelectView('calendar')} 

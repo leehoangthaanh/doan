@@ -6,6 +6,11 @@ import { env } from '~/config/environment'
 import { CONNECT_DB, CLOSE_DB, GET_DB } from '~/config/mongodb'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
+import dotenv from 'dotenv'
+
+dotenv.config({
+    path: process.env.NODE_ENV === 'docker' ? '.env.docker' : '.env'
+})
 
 const START_SERVER = () => {
     const app = express()

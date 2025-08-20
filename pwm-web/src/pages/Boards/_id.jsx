@@ -16,15 +16,29 @@
   function Board() {
     const [board, setBoard] = useState(null)
     const [currentView, setCurrentView] = useState('board')
-    const boardId = '688d25504c5954defd0ef469'
+    const [boardId, setBoardId] = useState(null)
+
     const fetchBoard = async () => {
-      const boardData = await fetchBoardDetailsAPI(boardId)
-      setBoard(boardData)
+      if (!boardId) return
+      try {
+        const boardData = await fetchBoardDetailsAPI(boardId)
+        setBoard(boardData)
+      } catch (err) {
+        console.error('Failed to fetch board:', err)
+      }
     }
+
+
+    useEffect(() => {
+      const savedBoardId = localStorage.getItem('boardId')
+      if (savedBoardId) {
+        setBoardId(savedBoardId)
+      }
+    }, [])
 
     useEffect(() => {
       fetchBoard()
-    }, [])
+    }, [boardId])
 
     const createNewColumn = async (newColumnData) => {
       await createNewColumnAPI({

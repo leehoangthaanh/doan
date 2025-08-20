@@ -46,8 +46,10 @@ function Profile() {
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('user')
+    localStorage.setItem('logout', Date.now())
     toast.success('Đăng xuất')
     navigate('/login')
+    window.location.href = '/login'
   }
 
   useEffect(() => {

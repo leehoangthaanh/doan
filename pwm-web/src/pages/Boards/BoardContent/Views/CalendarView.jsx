@@ -51,8 +51,13 @@ function CalendarView({ events = [] }) {
                 backgroundColor: '#ff6b6b',
                 color: 'white',
                 fontWeight: 700,
-                border: (theme) => `1px solid ${theme.palette.primary.main}`,
-                boxSizing: 'border-box'
+                // border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                // boxSizing: 'border-box'
+            },
+
+            '& .rbc-show-more': {
+                bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#2d2d2d' : 'white'),
+                color: (theme) => (theme.palette.mode === 'dark' ? '#dcdde1' : '#3174ad')
             },
 
             '& .rbc-off-range-bg': {
@@ -77,11 +82,14 @@ function CalendarView({ events = [] }) {
                 fontSize: '0.875rem',
                 padding: '3px 12px',
                 width: 'fit-content',
-                minWidth: 'unset',
-                maxWidth: 'unset',
+                minWidth: '0',
+                maxWidth: '100%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
                 margin: '0 auto'
             }
         }}
