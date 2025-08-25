@@ -56,7 +56,7 @@ const login = async ({ username, password }) => {
 
     // Tạo JWT
     const token = jwt.sign(
-        { userId: user._id.toString(), username: user.username },
+        { userId: user._id.toString(), username: user.username, role: user.role },
         env.JWT_SECRET,
         { expiresIn: '1d' }
     )
@@ -71,10 +71,15 @@ const login = async ({ username, password }) => {
             fullName: user.fullName,
             username: user.username,
             birthDate: user.birthDate,
-            hometown: user.hometown
+            hometown: user.hometown,
+            role: user.role
         },
         boards
     }
+}
+
+const getAllUsers = async () => {
+    return await userModel.getAllUsers()
 }
 
 const update = async (id, data) => {
@@ -99,10 +104,33 @@ const changePassword = async (userId, { oldPassword, newPassword }) => {
     return { message: 'Cập nhật mật khẩu thành công.' }
 }
 
+const deleteUser = async (targetUserId, currentUser) => {
+    // currentUser lấy từ JWT middleware (user đang đăng nhập)
+    return await userModel.deleteUserById(targetUserId, currentUser)
+}
+
+const updateUserRole = async (id, role) => {
+    // Chỉ cho phép 'user' hoặc 'admin'
+    if (!['user', 'admin'].includes(role)) {
+        throw new Error('Vai trò không hợp lệ. Chỉ cho phép "user" hoặc "admin"')
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(id, { role })
+
+    if (!updatedUser) {
+        throw new Error('Không tìm thấy người dùng để cập nhật')
+    }
+
+    return updatedUser
+}
+
 
 export const userService = {
     register,
     login,
     update,
-    changePassword
+    changePassword,
+    deleteUser,
+    getAllUsers,
+    updateUserRole
 }

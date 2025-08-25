@@ -6,6 +6,7 @@ import { moveCardAPI, moveColumnAPI } from '~/apis/index'
 import CalendarView from './Views/CalendarView'
 import DashboardView from './Views/DashboardView'
 import TableView from './Views/TableView'
+import UserManagement from '~/pages/Users/UserManagement'
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatters'
 import { 
@@ -314,6 +315,8 @@ function BoardContent({ board, currentView, createNewColumn, deleteColumn, creat
         return <DashboardView board={{...board, columns: orderedColumns}} />
       case 'table':
         return <TableView board={{...board, columns: orderedColumns}} />
+      case 'userManagement':
+        return <UserManagement /> 
       case 'board':
       default:
         return (

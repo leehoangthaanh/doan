@@ -5,6 +5,7 @@ import Chip from '@mui/material/Chip'
 import Tooltip from '@mui/material/Tooltip'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import Filter from '~/components/AppBar/Menu/Filter'
+import Notification from '~/components/AppBar/Menu/Notification'
 
 
 
@@ -49,8 +50,11 @@ function BoardBar({ board, currentView, setCurrentView }) {
           </Tooltip>
           <Filter currentView={currentView} setCurrentView={setCurrentView} />
         </Box>
-        <Profile />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Notification board={board} />
+        <Profile setCurrentView={setCurrentView} />
       </Box>
+    </Box>
   )
 }
 

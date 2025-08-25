@@ -95,3 +95,43 @@ export const updateColumnOrderAPI = async (columnId, newCardOrderIds) => {
   return response.data
 }
 
+export const getUsersAPI = async () => {
+  try {
+    const res = await axios.get(`${API_ROOT}/v1/user/all`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+    return res.data
+  } catch (error) {
+    throw error.response?.data || error
+  }
+}
+
+// Xóa user theo id
+export const deleteUserAPI = async (id) => {
+  try {
+    const res = await axios.delete(`${API_ROOT}/v1/user/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+    return res.data
+  } catch (error) {
+    throw error.response?.data || error
+  }
+}
+
+export const updateUserRoleAPI = async (id, role) => {
+  try {
+    const res = await axios.put(`${API_ROOT}/v1/user/update-role/${id}`, { role }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+    return res.data.user // hoặc tùy response bạn trả về
+  } catch (error) {
+    throw error.response?.data || error
+  }
+}
+

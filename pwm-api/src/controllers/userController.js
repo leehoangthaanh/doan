@@ -20,6 +20,15 @@ const login = async (req, res, next) => {
     }
 }
 
+const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await userService.getAllUsers()
+        res.status(200).json(users)
+    } catch (error) {
+        next(error)
+    }
+}
+
 const update = async (req, res) => {
     try {
         const { id } = req.params
@@ -42,10 +51,45 @@ const changePassword = async (req, res) => {
     }
 }
 
+const deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params // id của user cần xóa
+        const currentUser = req.user // user đang đăng nhập (đã được gắn từ middleware JWT)
+
+        const result = await userService.deleteUser(id, currentUser)
+        return res.status(StatusCodes.OK).json({
+            message: 'Xóa người dùng thành công',
+            result
+        })
+    } catch (error) {
+        const status = error.status || 500
+        return res.status(status).json({ message: error.message })
+    }
+}
+
+const updateRole = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const { role } = req.body
+
+        const updatedUser = await userService.updateUserRole(id, role)
+
+        res.status(200).json({
+            message: 'Cập nhật quyền thành công',
+            user: updatedUser
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 export const userController = {
     register,
     login,
     update,
-    changePassword
+    changePassword,
+    deleteUser,
+    getAllUsers,
+    updateRole
 }

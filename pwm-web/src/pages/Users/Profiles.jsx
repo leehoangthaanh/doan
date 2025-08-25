@@ -10,10 +10,11 @@ import {
   Divider,
   Typography,
 } from '@mui/material'
+import UserManagement from './UserManagement'
 import UserInfo from './UserInfo'
 import ChangePassword from './ChangePassword'
 
-function Profile() {
+function Profile({ setCurrentView }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -105,6 +106,11 @@ function Profile() {
         </Box>
 
         <Divider />
+        {user?.role === 'admin' && (
+          <MenuItem onClick={() => { setCurrentView('userManagement'); handleMenuClose() }}>
+            Quản lý người dùng
+          </MenuItem>
+        )}
         <MenuItem onClick={handleOpenUserDialog}>Thông tin cá nhân</MenuItem>
         <MenuItem onClick={handleOpenPasswordDialog}>Đổi mật khẩu</MenuItem>
         <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>

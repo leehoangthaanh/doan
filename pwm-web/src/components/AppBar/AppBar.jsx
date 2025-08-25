@@ -70,7 +70,7 @@ function AppBar({ updateCard, deleteCard }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <EventAvailableIcon sx={{ color: 'white' }} />
           <Typography variant="h6" sx={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'white' }}>
-            Trello
+            Công việc cá nhân
           </Typography>
           {/* <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
             <Filter />

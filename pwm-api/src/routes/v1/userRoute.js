@@ -11,6 +11,13 @@ Router.route('/register')
 Router.route('/login')
     .post(userValidation.login, userController.login)
 
+Router.route('/all')
+    .get(
+        authMiddleware.verifyToken,
+        authMiddleware.isAdmin,
+        userController.getAllUsers
+    )
+
 Router.route('/update/:id')
     .put(
         authMiddleware.verifyToken,
@@ -26,5 +33,18 @@ Router.route('/change-password')
         userController.changePassword              
     )
 
+Router.route('/update-role/:id')
+    .put(
+        authMiddleware.verifyToken,
+        authMiddleware.isAdmin,
+        userController.updateRole
+    )
+
+Router.route('/delete/:id')
+    .delete(
+        authMiddleware.verifyToken,
+        authMiddleware.isAdmin,
+        userController.deleteUser
+    )
 
 export const userRoutes = Router
